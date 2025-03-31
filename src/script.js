@@ -153,16 +153,16 @@ document.getElementById('relatorioMedia').addEventListener('click', () => {
 });
 
 document.getElementById('relatorioCargos').addEventListener('click', () => {
-    const cargosUnicos = [...new Set(
-        funcionarios
-            .map(f => f.getCargo().trim().toUpperCase())
-            .filter(cargo => cargo) 
-    )];
-    
+    const cargoFrequencia = funcionarios.reduce((acc, f) => {
+        const cargo = f.getCargo().trim().toUpperCase();
+        acc[cargo] = (acc[cargo] || 0) + 1;
+        return acc;
+    }, {});
+
+    const cargosUnicos = Object.keys(cargoFrequencia).filter(cargo => cargoFrequencia[cargo] === 1);
+
     exibirRelatorio('Cargos únicos:', cargosUnicos);
 });
-
-
 
 document.getElementById('relatorioNomes').addEventListener('click', () => {
     const nomesMaiusculos = funcionarios.map(f => f.getNome().toUpperCase());
